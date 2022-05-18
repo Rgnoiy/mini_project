@@ -95,8 +95,8 @@ while True:
             # TODO: get user input for comma-separated list of product index values
                 # TODO: convert user input to list of integers
             # TODO: PRINT couriers list with index value for each courier
-            # TODO: get user input for courier index to select courier
-            # TODO: SET order status to be 'PREPARING'(trigger)
+            # TODO: get user input for courier_ID to select courier
+            # TODO: SET order status to be 1(trigger)
             # TODO: CREATE AND display order as dict with the information provided above
             # TODO: append order to orders list
         elif user_input_for_order == "3":       # update status
