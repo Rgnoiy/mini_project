@@ -18,7 +18,7 @@ orders = Table('orders', metadata,
                Column('order_id', Integer, nullable=False, primary_key=True, autoincrement=True),
                Column('customer_name', VARCHAR(45), nullable=False),
                Column('customer_address', VARCHAR(60), nullable=False),
-               Column('customer_phone', VARCHAR(45), nullable=False),
+               Column('customer_phone', VARCHAR(45), nullable=False, unique=True),
                Column('courier_id', INTEGER, nullable=False),
                Column('order_status_id', INTEGER, nullable=False, server_default='1'),
                Column('ordered_items', VARCHAR(50), nullable=False))
@@ -214,7 +214,8 @@ def create_order():
                 else:
                     print(f"Invalid choice: {k}")
     except NameError:
-        pass
+        print("Your change has not been saved.")
+        print('-' * 80)
 
 
 def add_new_product():
@@ -224,6 +225,7 @@ def add_new_product():
     while True:
         product_name = input("Please enter product name: ").title().strip()
         if product_name == '0':
+            print('-' * 80)
             break
         elif check_if_empty(product_name):
             if product_name in df1.index:
@@ -237,6 +239,7 @@ def add_new_product():
         while product_name != '0':
             price = input(f"Please enter the price for {product_name}: ").strip().replace(',', '.')
             if price == '0':
+                print('-' * 80)
                 break
             elif check_if_empty(price):
                 try:
@@ -270,7 +273,8 @@ def add_new_product():
                 else:
                     print(f"Invalid choice: {k}")
     except NameError:
-        pass
+        print("Your change has not been saved.")
+        print('-' * 80)
 
 
 def add_new_courier():
@@ -278,6 +282,7 @@ def add_new_courier():
     while True:
         first_name = input("Please enter your first name: ").title().strip()
         if first_name == '0':
+            print('-' * 80)
             break
         last_name = input("Please enter your last name: ").title().strip()
         if last_name == '0':
@@ -294,6 +299,7 @@ def add_new_courier():
             courier_phone = courier_phone.replace('-', '').replace(' ', '').replace('(', '').replace(')', '').replace(
                 '+', '')
             if courier_phone == '0':
+                print('-' * 80)
                 break
             elif check_if_empty(courier_phone):
                 if courier_phone.isalnum():
@@ -321,8 +327,12 @@ def add_new_courier():
                     break
                 else:
                     print(f"Invalid choice: {k}")
+        else:
+            print("Your change has not been saved.")
+            print('-' * 80)
     except NameError:
-        pass
+        print("Your change has not been saved.")
+        print('-' * 80)
 
 
 def delete_product_list():
@@ -488,7 +498,7 @@ def delete_courier_list():
 
 def update_existing_product():
     print("You are updating product list. Leave it blank if you don't want to update it. \n"
-          "Press '0' to return to product menu.")
+          "Press '0' to return to courier menu.")
     sql = """select * from products"""
     print_products_list()
     df1 = pd.read_sql(sql, conn, index_col='product_id')
@@ -559,16 +569,18 @@ def update_existing_product():
                 else:
                     print(f"Invalid choice: {k}")
         else:
+            print("Your change has not been saved.")
             print('-' * 80)
             print("You've returned to product menu.")
     except NameError:
+        print("Your change has not been saved.")
         print('-' * 80)
         print("You've returned to product menu.")
 
 
 def update_existing_courier():
     print("You are updating courier list. Leave it blank if you don't want to update it. \n"
-          "Type '0' to return to product menu.")
+          "Type '0' to return to courier menu.")
     sql = """select * from couriers"""
     print_couriers_list()
     df1 = pd.read_sql(sql, conn, index_col='courier_id')
@@ -652,12 +664,13 @@ def update_existing_courier():
             print('-' * 80)
             print("You've returned to courier menu.")
     except NameError:
+        print("Your change has not been saved.")
         print('-' * 80)
         print("You've returned to courier menu.")
 
 
 def update_status_in_order_table():
-    print("You are updating order status. Leave if black if you\nType '0' to return to order menu.")
+    print("You are updating order status. Leave if black if you don't want to update it.\nType '0' to return to order menu.")
     sql = '''SELECT order_id, customer_name, customer_address, customer_phone, courier_id, ordered_items, order_status 
     FROM orders LEFT OUTER JOIN order_status 
     on orders.order_status_id = order_status.order_status_id'''
@@ -719,6 +732,7 @@ def update_status_in_order_table():
             print('-' * 80)
             print("You've returned to order menu.")
     except NameError:
+        print("Your change has not been saved.")
         print('-' * 80)
         print("You've returned to order menu.")
 
@@ -1047,17 +1061,4 @@ def check_if_product_list_input_valid(a: list, df):
     return True
 
 
-# add_new_courier('Sam', '9376328928')
-# add_new_product('ice-coffee', 3.45)
-# add_new_product('coke', 4.34)
-# add_new_product('cookie', 3.5)
-# add_new_status("")
-# delete_order_list()
-# sql = '''SELECT order_id, customer_name, customer_address, customer_phone, courier_id, ordered_items, order_status
-#     FROM orders LEFT OUTER JOIN order_status
-#     on orders.order_status_id = order_status.order_status_id'''
-# df1 = pd.read_sql(sql, conn, index_col='order_id')
-# a = df1.loc[5, 'customer_name'].split(' ')
-# print(a)
-# update_order()
 session.close()
